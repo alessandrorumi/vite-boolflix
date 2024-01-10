@@ -22,7 +22,8 @@ export default {
         .get(searchUrl)
         .then((response) => {
           console.log(response.data.results[0].original_title);
-          store.media = response.data.results;
+          console.log(response.data.results[0].overview);
+          store.movies = response.data;
         })
         .catch((error) => {
           console.log('Errore Chiamata Api', error);
@@ -37,7 +38,7 @@ export default {
 
 <template>
   <AppHeader />
-  <main>
+  <main class="px-5">
     <MediaList />
   </main>
 </template>
