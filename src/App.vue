@@ -16,25 +16,35 @@ export default {
   },
   methods: {
     searchMedia() {
-      let searchUrl = store.apiUrl;
-      if (store.movie !== '') {
-        searchUrl += `&query=${store.movie}`
+      let searchTerm = store.media;
+
+      let movieUrl = store.moviesUrl;
+      if (searchTerm !== '') {
+        movieUrl += `&query=${searchTerm}`;
       }
-      axios
-        .get(searchUrl)
+      axios.get(movieUrl)
         .then((response) => {
-          // console.log(response.data.results[0].original_title);
-          // console.log(response.data.results[0].overview);
           store.movies = response.data;
         })
         .catch((error) => {
-          console.log('Errore Chiamata Api', error);
+          console.log('Errore Chiamata Api Movies', error);
+        });
+
+      let seriesUrl = store.seriesUrl;
+      if (searchTerm !== '') {
+        seriesUrl += `&query=${searchTerm}`;
+      }
+      axios.get(seriesUrl)
+        .then((response) => {
+          store.series = response.data;
         })
-    },
-  },
-  // created() {
-  //   this.searchMedia();
-  // }
+        .catch((error) => {
+          console.log('Errore Chiamata Api Series', error);
+        });
+    }
+
+
+  }
 }
 </script>
 

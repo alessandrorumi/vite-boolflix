@@ -7,7 +7,7 @@ export default {
     return {
       store,
     }
-  },
+  }
 }
 </script>
 
@@ -19,7 +19,7 @@ export default {
     <div class="search">
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Ricerca" aria-describedby="button-addon2"
-          v-model="store.movie">
+          v-model="store.media">
         <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="$emit('search')">Cerca</button>
       </div>
     </div>

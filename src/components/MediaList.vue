@@ -27,7 +27,13 @@ export default {
     </div>
 
     <!-- Serie TV -->
-    <h1 class="mt-5 text-center">Serie Tv</h1>
+    <h1 class="mt-5 text-center">Serie TV</h1>
+    <div class="d-flex flex-wrap" v-if="store.series.results">
+      <div class="card p-3 text-center" v-for="mediaItem in store.series.results" :key="mediaItem.id">
+        <SingleMedia :mediaInfo="mediaItem" />
+      </div>
+    </div>
+
 
   </div>
 </template>
