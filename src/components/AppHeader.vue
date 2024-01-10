@@ -1,6 +1,13 @@
 <script>
+import { store } from '../store';
+
 export default {
-  name: 'AppHeader'
+  name: 'AppHeader',
+  data() {
+    return {
+      store,
+    }
+  },
 }
 </script>
 
@@ -11,9 +18,9 @@ export default {
     </div>
     <div class="search">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Ricerca" aria-label="Recipient's username"
-          aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Cerca</button>
+        <input type="text" class="form-control" placeholder="Ricerca" aria-describedby="button-addon2"
+          v-model="store.movie">
+        <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="$emit('search')">Cerca</button>
       </div>
     </div>
   </header>

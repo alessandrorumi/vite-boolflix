@@ -17,12 +17,14 @@ export default {
   methods: {
     searchMedia() {
       let searchUrl = store.apiUrl;
-      searchUrl += `&query=${store.media}`
+      if (store.movie !== '') {
+        searchUrl += `&query=${store.movie}`
+      }
       axios
         .get(searchUrl)
         .then((response) => {
-          console.log(response.data.results[0].original_title);
-          console.log(response.data.results[0].overview);
+          // console.log(response.data.results[0].original_title);
+          // console.log(response.data.results[0].overview);
           store.movies = response.data;
         })
         .catch((error) => {
@@ -30,14 +32,14 @@ export default {
         })
     },
   },
-  created() {
-    this.searchMedia();
-  }
+  // created() {
+  //   this.searchMedia();
+  // }
 }
 </script>
 
 <template>
-  <AppHeader />
+  <AppHeader @search="searchMedia" />
   <main class="px-5">
     <MediaList />
   </main>
