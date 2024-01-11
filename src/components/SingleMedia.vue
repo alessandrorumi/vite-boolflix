@@ -23,9 +23,10 @@ export default {
 <template>
   <!-- Poster -->
   <div class="poster">
-    <img :src="imageUrl" alt="">
+    <img v-if="imageUrl !== 'https://image.tmdb.org/t/p/w342/null'" :src="imageUrl" alt="">
+    <div class="no-poster" v-else><img src="../assets/no-poster.png" alt=""></div>
     <!-- Testo -->
-    <div class="text">
+    <div class="text p-0">
       <div class="title">
         <span v-if="mediaInfo.title !== undefined">{{ mediaInfo.title }}</span>
         <span v-else>{{ mediaInfo.name }}</span>
@@ -38,7 +39,7 @@ export default {
 
       <div class="image">
         <span>{{ mediaInfo.original_language }}</span>
-        <img src="" alt="">
+        <!-- <img src="" alt=""> -->
       </div>
 
       <!-- Stelline Film / Serie TV -->
@@ -60,12 +61,9 @@ export default {
 @use '../styles/partials/mixins' as *;
 @use '../styles/partials/variables' as *;
 
-img {
-  width: 100%;
-}
-
 .poster {
   position: relative;
+  height: 480px;
 
   &:hover {
     cursor: pointer;
@@ -73,7 +71,9 @@ img {
 
   img {
     width: 100%;
-    transition: opacity 0.5s ease;
+    height: 480px;
+    object-fit: cover;
+    transition: scale 0.5s ease, opacity 0.5s ease;
     opacity: 1;
   }
 
@@ -81,18 +81,21 @@ img {
     position: absolute;
     top: 0;
     bottom: 0;
+    left: 0;
+    right: 0;
     overflow-y: auto;
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s, opacity 0.5s ease;
     transition-delay: 0s, 0.5s;
-    padding: .5rem;
+    padding: .25rem;
   }
 
   // Transizione all'Hover
   &:hover {
     img {
       opacity: .1;
+      scale: 1.1;
     }
 
     .text {
@@ -101,5 +104,10 @@ img {
       transition-delay: 0s;
     }
   }
+}
+
+.no-poster {
+  width: 100%;
+  background-color: black;
 }
 </style>

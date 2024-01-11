@@ -44,6 +44,6 @@ export default {
 
 .my-card {
   width: calc((25%) - 1rem);
-  margin: 0 .5rem .5rem;
+  margin: 0 .5rem 1rem;
 }
 </style>

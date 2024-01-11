@@ -18,9 +18,8 @@ export default {
     </div>
     <div class="search">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Ricerca" aria-describedby="button-addon2"
-          v-model="store.media">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="$emit('search')">Cerca</button>
+        <input type="text" class="form-control" placeholder="Ricerca" v-model="store.media">
+        <button class="btn btn-danger" type="button" @click="$emit('search')">Cerca</button>
       </div>
     </div>
   </header>
@@ -36,5 +35,14 @@ header {
   background-color: #000;
   @include vert-align-center;
   justify-content: space-between;
+
+  .form-control {
+    &:focus {
+      outline: none;
+    }
+
+    box-shadow: none;
+    border-color: #000;
+  }
 }
 </style>
