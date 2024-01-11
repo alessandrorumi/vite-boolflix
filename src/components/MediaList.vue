@@ -43,8 +43,7 @@ export default {
 @use '../styles/partials/variables' as *;
 
 .my-card {
-  width: calc((25%) - 2rem);
-  margin: 0 .5rem 1rem;
-  border: 1px solid grey;
+  width: calc((25%) - 1rem);
+  margin: 0 .5rem .5rem;
 }
 </style>

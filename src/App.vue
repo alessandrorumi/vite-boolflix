@@ -62,6 +62,6 @@ export default {
 
 main {
   background-color: #111111;
-  min-height: 700px;
+  min-height: calc(100vh - 60px);
 }
 </style>
