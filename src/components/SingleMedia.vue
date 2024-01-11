@@ -8,12 +8,23 @@ export default {
     return {
       imageUrl: `https://image.tmdb.org/t/p/w342/${this.mediaInfo.poster_path}`
     }
+  },
+  computed: {
+    roundVoteAverage() {
+      if (this.mediaInfo.vote_average !== undefined) {
+        return Math.min(5, Math.ceil(this.mediaInfo.vote_average / 2));
+      }
+      return '';
+    }
   }
 }
 </script>
 
 <template>
-  <img :src="imageUrl" alt="">
+  <!-- Poster -->
+  <div class="poster">
+    <img :src="imageUrl" alt="">
+  </div>
 
   <div class="title">
     <span v-if="mediaInfo.title !== undefined">{{ mediaInfo.title }}</span>
@@ -30,8 +41,16 @@ export default {
     <img src="" alt="">
   </div>
 
+  <!-- Stelline Film / Serie TV -->
+  <div class="stars">
+    <!-- Operatore ternario (gestione colore) -->
+    <i v-for="star in 5" class="fa-solid fa-star" :style="{ color: star <= roundVoteAverage ? '#FFD43B' : '#ccc' }"></i>
+  </div>
 
-  <span>{{ mediaInfo.vote_average }}</span>
+  <!-- Sinossi -->
+  <div class="overview">
+    <span>{{ mediaInfo.overview }}</span>
+  </div>
 </template>
 
 <style lang="scss" scoped>

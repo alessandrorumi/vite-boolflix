@@ -16,11 +16,11 @@ export default {
   },
   methods: {
     searchMedia() {
-      let searchTerm = store.media;
+      let searchMedia = store.media;
 
       let movieUrl = store.moviesUrl;
-      if (searchTerm !== '') {
-        movieUrl += `&query=${searchTerm}`;
+      if (searchMedia !== '') {
+        movieUrl += `&query=${searchMedia}`;
       }
       axios.get(movieUrl)
         .then((response) => {
@@ -31,8 +31,8 @@ export default {
         });
 
       let seriesUrl = store.seriesUrl;
-      if (searchTerm !== '') {
-        seriesUrl += `&query=${searchTerm}`;
+      if (searchMedia !== '') {
+        seriesUrl += `&query=${searchMedia}`;
       }
       axios.get(seriesUrl)
         .then((response) => {
