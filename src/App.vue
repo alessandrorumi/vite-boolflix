@@ -50,7 +50,7 @@ export default {
 
 <template>
   <AppHeader @search="searchMedia" />
-  <main class="px-5">
+  <main>
     <MediaList />
   </main>
 </template>
@@ -61,7 +61,7 @@ export default {
 @use '../src/styles/partials/variables' as *;
 
 main {
-  background-color: rgba($color: #000000, $alpha: .8);
+  background-color: #111111;
   min-height: 700px;
 }
 </style>
