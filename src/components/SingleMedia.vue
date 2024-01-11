@@ -6,7 +6,7 @@ export default {
   },
   data() {
     return {
-      imageUrl: `https://image.tmdb.org/t/p/w342/${this.mediaInfo.poster_path}`
+      imageUrl: `https://image.tmdb.org/t/p/w342/${this.mediaInfo.poster_path}`,
     }
   },
   computed: {
@@ -25,25 +25,31 @@ export default {
   <div class="poster">
     <img v-if="imageUrl !== 'https://image.tmdb.org/t/p/w342/null'" :src="imageUrl" alt="">
     <div class="no-poster" v-else><img src="../assets/no-poster.png" alt=""></div>
+
     <!-- Testo -->
     <div class="text p-0">
+      <!-- Titolo -->
       <div class="title">
-        <span v-if="mediaInfo.title !== undefined">{{ mediaInfo.title }}</span>
-        <span v-else>{{ mediaInfo.name }}</span>
+        <h4 v-if="mediaInfo.title !== undefined">{{ mediaInfo.title }}</h4>
+        <h4 v-else>{{ mediaInfo.name }}</h4>
       </div>
 
+      <!-- Titolo originale -->
       <div class="original-title">
-        <span v-if="mediaInfo.original_title !== undefined">{{ mediaInfo.original_title }}</span>
-        <span v-else>{{ mediaInfo.original_name }}</span>
+        <h4 v-if="mediaInfo.original_title !== undefined">{{ mediaInfo.original_title }}</h4>
+        <h4 v-else>{{ mediaInfo.original_name }}</h4>
       </div>
 
+      <!-- Flag -->
       <div class="image">
-        <span>{{ mediaInfo.original_language }}</span>
-        <!-- <img src="" alt=""> -->
+        <img id="flag" v-if="mediaInfo.original_language === 'it'" src="../assets/flags/it.png" alt="">
+        <img id="flag" v-else-if="mediaInfo.original_language === 'en'" src="../assets/flags/en.png" alt="">
+        <img id="flag" v-else-if="mediaInfo.original_language === 'ja'" src="../assets/flags/ja.png" alt="">
+        <img id="flag" v-else src="../assets/flags/world.png" alt="">
       </div>
 
       <!-- Stelline Film / Serie TV -->
-      <div class="stars">
+      <div class="stars my-3">
         <!-- Operatore ternario (gestione colore) -->
         <i v-for="star in 5" class="fa-solid fa-star"
           :style="{ color: star <= roundVoteAverage ? '#FFD43B' : '#ccc' }"></i>
@@ -53,6 +59,7 @@ export default {
       <div class="overview">
         <span>{{ mediaInfo.overview }}</span>
       </div>
+
     </div>
   </div>
 </template>
@@ -84,6 +91,7 @@ export default {
     left: 0;
     right: 0;
     overflow-y: auto;
+    scrollbar-width: none;
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s, opacity 0.5s ease;
@@ -109,5 +117,13 @@ export default {
 .no-poster {
   width: 100%;
   background-color: black;
+}
+
+.image {
+  #flag {
+    opacity: .75;
+    width: 15%;
+    height: auto;
+  }
 }
 </style>
