@@ -1,4 +1,8 @@
 <script>
+import axios from 'axios';
+import { store } from '../store';
+
+
 export default {
   name: 'SingleMedia',
   props: {
@@ -7,24 +11,39 @@ export default {
   data() {
     return {
       imageUrl: `https://image.tmdb.org/t/p/w342/${this.mediaInfo.poster_path}`,
+      store,
+      cast: null,
     }
   },
   methods: {
+    // Flags
     getImagePath: function () {
       const supportedLanguages = ['en', 'it', 'ja'];
       if (!supportedLanguages.includes(this.mediaInfo.original_language)) {
         return new URL('../assets/flags/world.png', import.meta.url).href;
       }
       return new URL(`../assets/flags/${this.mediaInfo.original_language}.png`, import.meta.url).href;
+    },
+    getCastMembers() {
+      let castUrl = `https://api.themoviedb.org/3/movie/${this.mediaInfo.id}/credits?api_key=b3c2594db70cdeb85587a904e8f35132&language=it-IT`;
+      axios
+        .get(castUrl)
+        .then((response) => {
+          this.cast = response.data.cast;
+        });
     }
   },
   computed: {
+    // Arrotondamento voti => stelline
     roundVoteAverage() {
       if (this.mediaInfo.vote_average !== undefined) {
         return Math.min(5, Math.ceil(this.mediaInfo.vote_average / 2));
       }
       return '';
     }
+  },
+  created() {
+    this.getCastMembers();
   }
 }
 </script>
@@ -49,6 +68,26 @@ export default {
         <h4 v-else>{{ mediaInfo.original_name }}</h4>
       </div>
 
+      <!-- Cast -->
+      <div v-if="cast" class=" cast">
+        <!-- Actors -->
+        <div class="actors">
+          <ul v-if="cast[0].known_for_department === 'Acting'">
+            <li v-for=" actors in cast.slice(0, 5)" :key="actors.id">
+              <i class="fa-solid fa-user-large" style="color: #ff3c3c;"></i> {{ actors.name }}
+            </li>
+          </ul>
+        </div>
+        <!-- Director -->
+        <!-- <div class="director">
+          <ul v-if="cast[0].known_for_department === 'Directing'">
+            <li v-for="director in cast">
+              <i class="fa-solid fa-user-large" style="color: #ff3c3c;"></i> {{ director.name }}
+            </li>
+          </ul>
+        </div> -->
+      </div>
+
       <!-- Flag -->
       <div class="flag">
         <img id="flag-img" :src="getImagePath(mediaInfo.original_language)">
@@ -57,7 +96,7 @@ export default {
       <!-- Stelline Film / Serie TV -->
       <div class="stars my-3">
         <!-- Operatore ternario (gestione colore) -->
-        <i v-for="star in 5" class="fa-solid fa-star"
+        <i v-for=" star  in  5 " class="fa-solid fa-star"
           :style="{ color: star <= roundVoteAverage ? '#FFD43B' : '#ccc' }"></i>
       </div>
 

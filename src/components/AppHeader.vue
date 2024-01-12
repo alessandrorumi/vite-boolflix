@@ -14,7 +14,7 @@ export default {
 <template>
   <header>
     <div class="title">
-      <h1>BoolFlix</h1>
+      <h1><a href="">BoolFlix</a></h1>
     </div>
     <div class="search">
       <div class="input-group">

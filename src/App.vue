@@ -18,32 +18,28 @@ export default {
     searchMedia() {
       let searchMedia = store.media;
 
+      let seriesUrl = store.seriesUrl;
       let movieUrl = store.moviesUrl;
+
       if (searchMedia !== '') {
         movieUrl += `&query=${searchMedia}`;
+        seriesUrl += `&query=${searchMedia}`;
       }
-      axios.get(movieUrl)
+
+      // Film
+      axios
+        .get(movieUrl)
         .then((response) => {
           store.movies = response.data;
         })
-        .catch((error) => {
-          console.log('Errore Chiamata Api Movies', error);
-        });
 
-      let seriesUrl = store.seriesUrl;
-      if (searchMedia !== '') {
-        seriesUrl += `&query=${searchMedia}`;
-      }
-      axios.get(seriesUrl)
+      // Serie TV
+      axios
+        .get(seriesUrl)
         .then((response) => {
           store.series = response.data;
         })
-        .catch((error) => {
-          console.log('Errore Chiamata Api Series', error);
-        });
     }
-
-
   }
 }
 </script>
