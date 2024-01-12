@@ -13,6 +13,7 @@ export default {
       imageUrl: `https://image.tmdb.org/t/p/w342/${this.mediaInfo.poster_path}`,
       store,
       cast: null,
+      crew: null,
     }
   },
   methods: {
@@ -30,6 +31,7 @@ export default {
         .get(castUrl)
         .then((response) => {
           this.cast = response.data.cast;
+          this.crew = response.data.crew.filter(member => member.job === 'Director');
         });
     }
   },
@@ -55,7 +57,7 @@ export default {
     <div class="no-poster" v-else><img src="../assets/no-poster.png" alt=""></div>
 
     <!-- Testo -->
-    <div class="text p-0">
+    <div class="info px-2 pt-1 pb-4">
       <!-- Titolo -->
       <div class="title">
         <h4 v-if="mediaInfo.title !== undefined">{{ mediaInfo.title }}</h4>
@@ -68,36 +70,42 @@ export default {
         <h4 v-else>{{ mediaInfo.original_name }}</h4>
       </div>
 
-      <!-- Cast -->
-      <div v-if="cast" class=" cast">
-        <!-- Actors -->
-        <div class="actors">
-          <ul v-if="cast[0].known_for_department === 'Acting'">
-            <li v-for=" actors in cast.slice(0, 5)" :key="actors.id">
-              <i class="fa-solid fa-user-large" style="color: #ff3c3c;"></i> {{ actors.name }}
-            </li>
-          </ul>
+      <div class="info-flex d-flex align-items-center my-3">
+        <!-- Cast -->
+        <div v-if="cast" class="cast">
+
+          <!-- Director -->
+          <div v-if="crew" class="director">
+            <ul class="p-0 m-0">
+              <li class="pb-1" v-for="director in crew" :key="director.id">
+                <i class="fa-solid fa-film" style="color: #ffffff;"></i> {{ director.name }}
+              </li>
+            </ul>
+          </div>
+
+          <!-- Actors -->
+          <div class="actors">
+            <ul class="p-0" v-if="cast[0].known_for_department === 'Acting'">
+              <li class="pb-1" v-for=" actors in cast.slice(0, 5)" :key="actors.id">
+                <i class="fa-solid fa-user-large" style="color: #ff3c3c;"></i> {{ actors.name }}
+              </li>
+            </ul>
+          </div>
         </div>
-        <!-- Director -->
-        <!-- <div class="director">
-          <ul v-if="cast[0].known_for_department === 'Directing'">
-            <li v-for="director in cast">
-              <i class="fa-solid fa-user-large" style="color: #ff3c3c;"></i> {{ director.name }}
-            </li>
-          </ul>
-        </div> -->
-      </div>
 
-      <!-- Flag -->
-      <div class="flag">
-        <img id="flag-img" :src="getImagePath(mediaInfo.original_language)">
-      </div>
+        <div class="flag-stars">
+          <!-- Flag -->
+          <div class="flag">
+            <img id="flag-img" :src="getImagePath(mediaInfo.original_language)">
+          </div>
 
-      <!-- Stelline Film / Serie TV -->
-      <div class="stars my-3">
-        <!-- Operatore ternario (gestione colore) -->
-        <i v-for=" star  in  5 " class="fa-solid fa-star"
-          :style="{ color: star <= roundVoteAverage ? '#FFD43B' : '#ccc' }"></i>
+          <!-- Stelline Film / Serie TV -->
+          <div class="stars my-3">
+            <!-- Operatore ternario (gestione colore) -->
+            <i v-for=" star  in  5 " class="fa-solid fa-star"
+              :style="{ color: star <= roundVoteAverage ? '#FFD43B' : '#ccc' }"></i>
+          </div>
+        </div>
       </div>
 
       <!-- Sinossi -->
@@ -129,7 +137,7 @@ export default {
     opacity: 1;
   }
 
-  .text {
+  .info {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -151,7 +159,7 @@ export default {
       scale: 1.1;
     }
 
-    .text {
+    .info {
       visibility: visible;
       opacity: 1;
       transition-delay: 0s;
@@ -164,10 +172,18 @@ export default {
   background-color: black;
 }
 
-.flag {
+.info-flex {
+  .cast {
+    width: 65%;
+  }
+
+  .flag-stars {
+    width: 35%;
+  }
+
   #flag-img {
     opacity: .75;
-    width: 15%;
+    width: 50%;
     height: auto;
   }
 }

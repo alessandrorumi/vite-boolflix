@@ -16,11 +16,11 @@ export default {
 </script>
 
 <template>
-  <div class="container p-0">
+  <div class="container p-0 pb-5">
 
     <!-- Film -->
     <h1 class="text-center" v-if="store.movies.results">Film</h1>
-    <div class="d-flex flex-wrap justify-content-center">
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4  g-3 d-flex flex-wrap justify-content-center">
       <div class="my-card text-center" v-for="mediaItem in store.movies.results" :key="mediaItem.id">
         <SingleMedia :mediaInfo="mediaItem" />
       </div>
@@ -41,9 +41,4 @@ export default {
 <style lang="scss" scoped>
 @use '../styles/partials/mixins' as *;
 @use '../styles/partials/variables' as *;
-
-.my-card {
-  width: calc((25%) - 1rem);
-  margin: 0 .5rem 1rem;
-}
 </style>
