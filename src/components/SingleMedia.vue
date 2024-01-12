@@ -9,6 +9,15 @@ export default {
       imageUrl: `https://image.tmdb.org/t/p/w342/${this.mediaInfo.poster_path}`,
     }
   },
+  methods: {
+    getImagePath: function () {
+      const supportedLanguages = ['en', 'it', 'ja'];
+      if (!supportedLanguages.includes(this.mediaInfo.original_language)) {
+        return new URL('../assets/flags/world.png', import.meta.url).href;
+      }
+      return new URL(`../assets/flags/${this.mediaInfo.original_language}.png`, import.meta.url).href;
+    }
+  },
   computed: {
     roundVoteAverage() {
       if (this.mediaInfo.vote_average !== undefined) {
@@ -41,11 +50,8 @@ export default {
       </div>
 
       <!-- Flag -->
-      <div class="image">
-        <img id="flag" v-if="mediaInfo.original_language === 'it'" src="../assets/flags/it.png" alt="">
-        <img id="flag" v-else-if="mediaInfo.original_language === 'en'" src="../assets/flags/en.png" alt="">
-        <img id="flag" v-else-if="mediaInfo.original_language === 'ja'" src="../assets/flags/ja.png" alt="">
-        <img id="flag" v-else src="../assets/flags/world.png" alt="">
+      <div class="flag">
+        <img id="flag-img" :src="getImagePath(mediaInfo.original_language)">
       </div>
 
       <!-- Stelline Film / Serie TV -->
@@ -119,8 +125,8 @@ export default {
   background-color: black;
 }
 
-.image {
-  #flag {
+.flag {
+  #flag-img {
     opacity: .75;
     width: 15%;
     height: auto;
