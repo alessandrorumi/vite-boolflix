@@ -72,7 +72,7 @@ export default {
 
       <div class="info-flex d-flex align-items-center my-3">
         <!-- Cast -->
-        <div v-if="cast" class="cast">
+        <div v-if="cast && cast.length > 0" class="cast">
 
           <!-- Director -->
           <div v-if="crew" class="director">

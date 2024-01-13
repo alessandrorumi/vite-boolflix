@@ -39,7 +39,27 @@ export default {
         .then((response) => {
           store.series = response.data;
         })
+    },
+
+    popularNow() {
+      // Film
+      axios
+        .get(store.trendingMoviesUrl)
+        .then((response) => {
+          store.trendingMovies = response.data;
+        })
+
+      // Serie TV
+      axios
+        .get(store.trendingTvUrl)
+        .then((response) => {
+          store.trendingTv = response.data;
+        })
     }
+  },
+
+  created() {
+    this.popularNow();
   }
 }
 </script>
