@@ -14,6 +14,7 @@ export default {
       store,
       cast: null,
       crew: null,
+      releaseDate: null,
     }
   },
   methods: {
@@ -25,6 +26,8 @@ export default {
       }
       return new URL(`../assets/flags/${this.mediaInfo.original_language}.png`, import.meta.url).href;
     },
+
+    // Nome attori e regista
     getCastMembers() {
       let castUrl = `https://api.themoviedb.org/3/movie/${this.mediaInfo.id}/credits?api_key=b3c2594db70cdeb85587a904e8f35132&language=it-IT`;
       axios
@@ -32,7 +35,36 @@ export default {
         .then((response) => {
           this.cast = response.data.cast;
           this.crew = response.data.crew.filter(member => member.job === 'Director');
+        })
+        .catch(() => {
+          console.log("Errore nel recupero dei membri del cast");
         });
+
+    },
+
+    // Data Uscita
+    getReleaseDate() {
+      let getReleaseDateUrl = `https://api.themoviedb.org/3/movie/${this.mediaInfo.id}/release_dates?api_key=b3c2594db70cdeb85587a904e8f35132&language=it-IT`;
+      axios
+        .get(getReleaseDateUrl)
+        .then((response) => {
+          const itRelease = response.data.results.find(release => release.iso_3166_1 === 'IT');
+          if (itRelease) {
+            this.releaseDate = itRelease.release_dates[0].release_date;
+          }
+        })
+        .catch(() => {
+          console.log("Errore nel recupero della data di uscita");
+        });
+    },
+
+    // Formatta Anno Uscita
+    formatDate(dateString) {
+      // nuovo oggetto Date
+      const date = new Date(dateString);
+      // restituisce l'anno a quattro cifre dell'oggetto Date
+      const year = date.getFullYear();
+      return `${year}`;
     }
   },
   computed: {
@@ -42,10 +74,11 @@ export default {
         return Math.min(5, Math.ceil(this.mediaInfo.vote_average / 2));
       }
       return '';
-    }
+    },
   },
-  created() {
+  mounted() {
     this.getCastMembers();
+    this.getReleaseDate()
   }
 }
 </script>
@@ -70,7 +103,7 @@ export default {
         <h4 v-else>{{ mediaInfo.original_name }}</h4>
       </div>
 
-      <div class="info-flex d-flex align-items-center my-3">
+      <div class="info-flex d-flex align-items-center mt-3 mb-1">
         <!-- Cast -->
         <div v-if="cast && cast.length > 0" class="cast">
 
@@ -85,7 +118,7 @@ export default {
 
           <!-- Actors -->
           <div class="actors">
-            <ul class="p-0" v-if="cast[0].known_for_department === 'Acting'">
+            <ul class="p-0 mb-0" v-if="cast[0].known_for_department === 'Acting'">
               <li class="pb-1" v-for=" actors in cast.slice(0, 5)" :key="actors.id">
                 <i class="fa-solid fa-user-large" style="color: #ff3c3c;"></i> {{ actors.name }}
               </li>
@@ -106,6 +139,11 @@ export default {
               :style="{ color: star <= roundVoteAverage ? '#FFD43B' : '#ccc' }"></i>
           </div>
         </div>
+      </div>
+
+      <!-- Data Uscita -->
+      <div class="release mb-2">
+        <span>{{ formatDate(releaseDate) }}</span>
       </div>
 
       <!-- Sinossi -->
